@@ -1,0 +1,165 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>C++primer-学习第三天 | 我的技术博客</title><meta name="author" content="mzghqgz"><meta name="copyright" content="mzghqgz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="第四章 表达式1.如果表达式求值结果是左值，decltype作用于表达式(不是变量)得到一个引用类型(int* p,解引用结果是左值，decltype(q)&#x3D;int&amp; )2.如果表达式求值结果是右值，decltype作用与表达式是原来的类型(int p,取地址结果是右值，decltype(&amp;q)&#x3D;int** )图片4.1图片4.23.说明在逻辑与，逻辑或及相等性">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++primer-学习第三天">
+<meta property="og:url" content="http://mzghqgz.github.io/liu.github.io/2026/07/23/C-primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/index.html">
+<meta property="og:site_name" content="我的技术博客">
+<meta property="og:description" content="第四章 表达式1.如果表达式求值结果是左值，decltype作用于表达式(不是变量)得到一个引用类型(int* p,解引用结果是左值，decltype(q)&#x3D;int&amp; )2.如果表达式求值结果是右值，decltype作用与表达式是原来的类型(int p,取地址结果是右值，decltype(&amp;q)&#x3D;int** )图片4.1图片4.23.说明在逻辑与，逻辑或及相等性">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg">
+<meta property="article:published_time" content="2026-07-23T11:05:51.000Z">
+<meta property="article:modified_time" content="2026-07-23T12:46:34.493Z">
+<meta property="article:author" content="mzghqgz">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "C++primer-学习第三天",
+  "url": "http://mzghqgz.github.io/liu.github.io/2026/07/23/C-primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/",
+  "image": "https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg",
+  "datePublished": "2026-07-23T11:05:51.000Z",
+  "dateModified": "2026-07-23T12:46:34.493Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mzghqgz",
+      "url": "http://mzghqgz.github.io/liu.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/liu.github.io/img/favicon.png"><link rel="canonical" href="http://mzghqgz.github.io/liu.github.io/2026/07/23/C-primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/liu.github.io/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/liu.github.io/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++primer-学习第三天',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://pic1.imgdb.cn/i/033slKgKqvO388zhHSJVfy.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/liu.github.io/"><span class="site-name">我的技术博客</span></a><a class="nav-page-title" href="/liu.github.io/"><span class="site-name">C++primer-学习第三天</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">C++primer-学习第三天</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-07-23T11:05:51.000Z" title="发表于 2026-07-23 19:05:51">2026-07-23</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-07-23T12:46:34.493Z" title="更新于 2026-07-23 20:46:34">2026-07-23</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>第四章 表达式<br>1.如果表达式求值结果是左值，decltype作用于表达式(不是变量)得到一个引用类型(int* p,解引用结果是左值，decltype(<em>q)&#x3D;int&amp; )<br>2.如果表达式求值结果是右值，decltype作用与表达式是原来的类型(int</em> p,取地址结果是右值，decltype(&amp;q)&#x3D;int** )<br>图片4.1<br><img src="/liu.github.io/img/day3pic4.1.jpg"><br>图片4.2<br><img src="/liu.github.io/img/day3pic4.2.jpg"><br>3.说明在逻辑与，逻辑或及相等性运算符中运算对象求值顺序<br>逻辑与：严格从左到右求值，支持短路<br>    1.先算左侧表达式<br>    2.如果左侧结果为false，直接判定整个表达式为false，右侧完全不执行(短路)<br>    3.只有左侧为true，才会去计算右侧<br>逻辑或：严格从左到右求值，支持短路<br>    1.先算左侧表达式<br>    2.如果左侧结果为true，直接判定整个表达式为true，右侧完全不执行(短路)<br>    3.只有左侧为false，才会去计算右侧<br>相等性运算符&#x3D;&#x3D;，!&#x3D;<br>    没有规定求值顺序，两边运算对象都会求值，不存在短路机制<br>4.条件运算符(?:)<br>    如果条件运算符满足左结合律，grade&lt;60?”fail”:grade&lt;75?”low pass”:grade&lt;90?”pass”:”high pass”<br>    若从左向右计算，如果grade&lt;60,显示fail，否则显示grade&lt;75,是一个bool值<br>5.四大显式转换<br>图片4.3<br><img src="/liu.github.io/img/day3pic4.3.jpg"><br>注：const_cast只能改变运算对象底层const<br>第五章 函数<br>1.说明形参，局部变量以及局部静态变量的区别<br>图片5.1<br><img src="/liu.github.io/img/day3pic5.1.jpg"><br>2.举一个形参应该是引用类型的例子，再举一个形参不能是引用的例子<br>void swap(int&amp; a,int&amp; b)<br>{<br>    int temp&#x3D;a;<br>    a&#x3D;b;<br>    b&#x3D;temp;<br>}</p>
+<p>int func(int a)<br>{<br>    return a*2;<br>}<br>3.尽量使用常量引用<br>    把函数不会改变的形参定义成普通引用是一种比较常见的错误，使用引用而非常量引用也会极大地限制函数所能接受的实参类型，我们不能<br>    把const对象，字面值或者需要类型转化的对象传递给普通的引用形参
+    </p>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://mzghqgz.github.io/liu.github.io">mzghqgz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://mzghqgz.github.io/liu.github.io/2026/07/23/C-primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/">http://mzghqgz.github.io/liu.github.io/2026/07/23/C-primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://mzghqgz.github.io/liu.github.io" target="_blank">我的技术博客</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/liu.github.io/2026/07/21/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/" title="C++primer-学习第二天"><img class="cover" src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="onerror=null;src='/liu.github.io/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">C++primer-学习第二天</div></div><div class="info-2"><div class="info-item-1">第二章变量和基本类型1.字面值常量练习2.5    图片1.1：    （a）’a’:类型是char，表示普通字符常量，占1字节     L’a’:类型是wchar_t（宽字符）     “a”:类型是const char[2]     L”a”:类型是const wchar_t[2]2.变量    如果想声明一个变量，而非定义，则在变量名前添加extern    如:extern int i，而且不能显式初始化变量3.复合类型    图片3.1：        指针指向一个具体的对象，其本身也是一个对象    引用相当于一个对象的别名    图片3.2：        图片3.3：     图片3.4： ![](/img/day2pic3.4.jpg) 对指针p进行解引用操作，若报错则非法 图片3.5： ![](/img/day2pic3.5.jpg)  4.const限定符    普通引用只能绑定左值(有持久地址变量)，不能绑定右值（临时值）    在初始化常量引用时允许用任意表达式作为初始值    顶层const指针必须初始化    底层const指针不需要初始化    不...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/liu.github.io/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/liu.github.io/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">mzghqgz</div><div class="author-info-description">记录C++学习心得</div><div class="site-data"><a href="/liu.github.io/archives/"><div class="headline">文章</div><div class="length-num">4</div></a><a href="/liu.github.io/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/liu.github.io/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/liu.github.io/2026/07/23/C-primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/" title="C++primer-学习第三天"><img src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="this.onerror=null;this.src='/liu.github.io/img/404.jpg'" alt="C++primer-学习第三天"/></a><div class="content"><a class="title" href="/liu.github.io/2026/07/23/C-primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/" title="C++primer-学习第三天">C++primer-学习第三天</a><time datetime="2026-07-23T11:05:51.000Z" title="发表于 2026-07-23 19:05:51">2026-07-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/liu.github.io/2026/07/21/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/" title="C++primer-学习第二天"><img src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="this.onerror=null;this.src='/liu.github.io/img/404.jpg'" alt="C++primer-学习第二天"/></a><div class="content"><a class="title" href="/liu.github.io/2026/07/21/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/" title="C++primer-学习第二天">C++primer-学习第二天</a><time datetime="2026-07-21T11:11:53.000Z" title="发表于 2026-07-21 19:11:53">2026-07-21</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/liu.github.io/2026/07/20/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%80%E5%A4%A9/" title="C++primer 学习第一天"><img src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="this.onerror=null;this.src='/liu.github.io/img/404.jpg'" alt="C++primer 学习第一天"/></a><div class="content"><a class="title" href="/liu.github.io/2026/07/20/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%80%E5%A4%A9/" title="C++primer 学习第一天">C++primer 学习第一天</a><time datetime="2026-07-20T11:45:23.000Z" title="发表于 2026-07-20 19:45:23">2026-07-20</time></div></div><div class="aside-list-item no-cover"><div class="content"><a class="title" href="/liu.github.io/2026/06/30/hello-world/" title="Hello World">Hello World</a><time datetime="2026-06-30T08:20:31.162Z" title="发表于 2026-06-30 16:20:31">2026-06-30</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mzghqgz</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/liu.github.io/js/utils.js?v=5.5.5"></script><script src="/liu.github.io/js/main.js?v=5.5.5"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
