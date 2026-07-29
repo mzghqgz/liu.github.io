@@ -1,0 +1,225 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>C++primer-学习第六天 | 我的技术博客</title><meta name="author" content="mzghqgz"><meta name="copyright" content="mzghqgz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="第10章 泛型算法    10.1 lambda表达式    1.基本语法：[capture list](parameter list)mutable-&gt;return type{function body}    捕获列表[]：访问所在函数的局部变量    捕获方式：1.值捕获[var]，拷贝变量到lambda内部，默认const，不加mutable不能修改。             2.引">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C++primer-学习第六天">
+<meta property="og:url" content="http://mzghqgz.github.io/liu.github.io/2026/07/29/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%85%AD%E5%A4%A9/index.html">
+<meta property="og:site_name" content="我的技术博客">
+<meta property="og:description" content="第10章 泛型算法    10.1 lambda表达式    1.基本语法：[capture list](parameter list)mutable-&gt;return type{function body}    捕获列表[]：访问所在函数的局部变量    捕获方式：1.值捕获[var]，拷贝变量到lambda内部，默认const，不加mutable不能修改。             2.引">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg">
+<meta property="article:published_time" content="2026-07-29T11:02:12.000Z">
+<meta property="article:modified_time" content="2026-07-29T12:54:59.073Z">
+<meta property="article:author" content="mzghqgz">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "C++primer-学习第六天",
+  "url": "http://mzghqgz.github.io/liu.github.io/2026/07/29/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%85%AD%E5%A4%A9/",
+  "image": "https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg",
+  "datePublished": "2026-07-29T11:02:12.000Z",
+  "dateModified": "2026-07-29T12:54:59.073Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mzghqgz",
+      "url": "http://mzghqgz.github.io/liu.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/liu.github.io/img/favicon.png"><link rel="canonical" href="http://mzghqgz.github.io/liu.github.io/2026/07/29/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%85%AD%E5%A4%A9/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/liu.github.io/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/liu.github.io/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'C++primer-学习第六天',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://pic1.imgdb.cn/i/033slKgKqvO388zhHSJVfy.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/liu.github.io/"><span class="site-name">我的技术博客</span></a><a class="nav-page-title" href="/liu.github.io/"><span class="site-name">C++primer-学习第六天</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">C++primer-学习第六天</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-07-29T11:02:12.000Z" title="发表于 2026-07-29 19:02:12">2026-07-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-07-29T12:54:59.073Z" title="更新于 2026-07-29 20:54:59">2026-07-29</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>第10章 泛型算法<br>    10.1 lambda表达式<br>    1.基本语法：[capture list](parameter list)mutable-&gt;return type{function body}<br>    捕获列表[]：访问所在函数的局部变量<br>    捕获方式：1.值捕获[var]，拷贝变量到lambda内部，默认const，不加mutable不能修改。<br>             2.引用捕获[&amp;var]，绑定外部变量引用，lambda内修改会直接改变外部原值<br>             3.全部捕获简写：[&#x3D;]:全部值捕获。[&amp;]:全部引用捕获<br>             4.混合捕获示例:[&#x3D;,&amp;x]: 默认值捕获，唯独x引用捕获。[&amp;,y]：默认引用捕获，唯独y值捕获<br>    捕获时机：<br>             lambda捕获发生在lambda被定义时，不是调用时。<br>             int x &#x3D; 10;<br>             auto f &#x3D; <a href="">x</a>{cout&lt;&lt;x;}<br>             x &#x3D; 100;<br>             f();  &#x2F;&#x2F;输出10，而不是100<br>    mutable关键字作用<br>             值捕获的副本默认是const，mutable唯一作用：去掉副本的const限制，允许在lambda内部修改拷贝出来的副本<br>    返回类型推导规则<br>             1.函数体内只有一条return语句：可以省略-&gt;type，编译器自动推导返回类型<br>             2.多条return，分支返回不同类型：必须显式写尾置返回类型</p>
+<pre><code>10.2 bind函数
+1.基础语法：auto new_callable = bind(origin_func,arg1,arg2,...,_placeholders::_1,_placeholders::_2);
+         _1,_2,_3...：占位符，定义在std::placeholders，表示调用新函数时传入的第一个，第二个，第三个实参
+2.bind参数传递规则：
+         默认是值传递，如果想绑定引用，必须使用ref()/cref()
+         void func(int&amp; x)
+         {
+            int a=10;
+            auto f=bind(func,ref(a));//传入引用
+            //auto f=bind(func,a);   //会拷贝副本，传值
+         }
+3.bind 适用场景：
+         需要参数重排，少量参数固定，兼容老式代码
+</code></pre>
+<p>第十一章 关联容器<br>    11.1 分别给出最适合使用list,vector,deque,map以及set的例子<br>        list:频繁在容器中间位置插入删除元素，几乎不需要随机访问<br>        vector:大量随机访问，只在尾部增删元素，很少在中间插入删除<br>        deque:需要随机访问，并且频繁在容器头部和尾部插入，删除元素<br>        map:保存键—值映射关系，按键有序查找<br>        set:保存不重复的元素，自动保持有序，快速查找元素是否存在</p>
+<pre><code>11.2 可以定义一个vector&lt;int&gt;::iterator到int的map吗？list&lt;int&gt;::iterator到int的map呢？对于两种情况，如果不能解释为什么
+    map&lt;vector&lt;int&gt;::iterator,int&gt;:合法，vector迭代器支持&lt;比较，满足map键的排序要求
+    map&lt;list&lt;int&gt;::iterator,int&gt;:标准C++下不合法，list双向迭代器只提供==/!=,未定义&lt;,map无法对键进行有序排序
+
+11.3 关联容器操作
+    key_type    此容器类型的关键字类型
+    mapped_type 每个关键字关联的类型
+    value_type  对于set，与key_type相同
+                对于map,为pair&lt;const key_type,mapped_type&gt;
+    如下面定义
+    set&lt;string&gt;::value_type v1;        v1是一个string
+    set&lt;string&gt;::key_type v2;          v2是一个string
+    map&lt;string,int&gt;::value_type v3;    v3是一个pair&lt;const string,int&gt;
+    map&lt;string,int&gt;::key_type v4;      v4是一个string
+    map&lt;string,int&gt;::mapped_type v3    v5是一个int
+
+11.4 对于什么问题你会选择count来解决，什么时候又会选择find呢
+    1.使用count的场景：只需要知道某个键是否存在，一共有多少个匹配元素，不需要拿到元素迭代器
+    count返回值：键出现的次数(0代表不存在，大于0代表存在)
+    2.使用find的场景：需要定位到该元素，并对元素进行读取，修改，删除操作
+    find返回迭代器：找到则返回元素迭代器，找不到返回尾后迭代器
+
+11.5 upper_bound,lower_bound和equal_range
+    1.upper_bound和lower_bound:
+    这两个操作都接受一个关键字，返回一个迭代器。如果关键字在容器中，lower_bound返回的迭代器将指向第一个具有给定关键字的元素
+    而upper_bound返回的迭代器则指向最后一个匹配给定关键字的元素之后的位置。如果元素不在multimap中，则返回相等的迭代器--指向
+    一个不影响排序的关键字插入位置
+    2.equal_range
+    接受一个关键字，返回一个迭代器的pair。若关键字存在，则第一个迭代器指向第一个与关键字匹配的元素，第二个迭代器指向最后一个
+    匹配元素之后的位置，若未找到匹配元素，则两个迭代器都指向关键字可以插入的位置
+
+11.6 图片
+![](/img/day6pic11.6.jpg)
+区别:
+1.如果key已经存在:会用新值覆盖map中原有key对应的value
+如果key不存在：插入这一键值对
+2.如果key已经存在：insert不会执行任何操作，原有value保持不变，不会被新值覆盖
+如果key不存在：才会插入新的键值对
+
+11.7 一个无序容器与其有序版本相比有何优势？有序版本有何优势
+1.无序容器(unordered_map,unordered_set)优势：查找，插入，删除平均时间复杂度为O(1),速度更快
+不需要维护元素有序，省去排序开销
+2.有序容器(map,set)优势：元素始终按关键字有序排列，可以遍历得到有序序列
+支持lower_bound,upper_bound,equal_range等范围查找操作
+最坏性能稳定，操作复杂度为O(log n),不会出现哈希冲突导致性能暴跌
+关键字只需支持&lt;比较，不需要定义哈希函数
+</code></pre>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://mzghqgz.github.io/liu.github.io">mzghqgz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://mzghqgz.github.io/liu.github.io/2026/07/29/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%85%AD%E5%A4%A9/">http://mzghqgz.github.io/liu.github.io/2026/07/29/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%85%AD%E5%A4%A9/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://mzghqgz.github.io/liu.github.io" target="_blank">我的技术博客</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/liu.github.io/2026/07/28/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%94%E5%A4%A9/" title="C++primer-学习第五天"><img class="cover" src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="onerror=null;src='/liu.github.io/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">C++primer-学习第五天</div></div><div class="info-2"><div class="info-item-1">第七章 类7.1 默认构造函数是参数列表为空的构造函数    答案：这句话是错误的，以下两种情况都属于默认构造函数：    1.形参列表全部带默认实参(不一定是空的参数列表)    2.没有形参(参数列表为空) 7.2 关键字explicit只对一个实参的构造函数有效，需要多个实参的构造函数不能用于执行隐式转换所以无需将这些构造函数声明为explicit，只能在类的声明构造函数时使用explicit关键字，在类的外部定义时不能重复    Sales_data item1(null_book);   &#x2F;&#x2F;正确，直接初始化    Sales_data item2 &#x3D; null_book;  &#x2F;&#x2F;错误：不能将explicit构造函数用于拷贝形式的初始化 7.3 vector将其单参数的构造函数定义成explicit的，而string不是，你觉得原因何在？    我的答案：vector定义成explicit，是防止里面的类型隐式转化为容器    而string不需要是因为，将char或者const char*类型转化为string类型是容...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/liu.github.io/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/liu.github.io/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">mzghqgz</div><div class="author-info-description">记录C++学习心得</div><div class="site-data"><a href="/liu.github.io/archives/"><div class="headline">文章</div><div class="length-num">7</div></a><a href="/liu.github.io/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/liu.github.io/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/liu.github.io/2026/07/29/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%85%AD%E5%A4%A9/" title="C++primer-学习第六天"><img src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="this.onerror=null;this.src='/liu.github.io/img/404.jpg'" alt="C++primer-学习第六天"/></a><div class="content"><a class="title" href="/liu.github.io/2026/07/29/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%85%AD%E5%A4%A9/" title="C++primer-学习第六天">C++primer-学习第六天</a><time datetime="2026-07-29T11:02:12.000Z" title="发表于 2026-07-29 19:02:12">2026-07-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/liu.github.io/2026/07/28/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%94%E5%A4%A9/" title="C++primer-学习第五天"><img src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="this.onerror=null;this.src='/liu.github.io/img/404.jpg'" alt="C++primer-学习第五天"/></a><div class="content"><a class="title" href="/liu.github.io/2026/07/28/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%94%E5%A4%A9/" title="C++primer-学习第五天">C++primer-学习第五天</a><time datetime="2026-07-28T11:04:02.000Z" title="发表于 2026-07-28 19:04:02">2026-07-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/liu.github.io/2026/07/26/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%9B%9B%E5%A4%A9/" title="C++primer-学习第四天"><img src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="this.onerror=null;this.src='/liu.github.io/img/404.jpg'" alt="C++primer-学习第四天"/></a><div class="content"><a class="title" href="/liu.github.io/2026/07/26/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%9B%9B%E5%A4%A9/" title="C++primer-学习第四天">C++primer-学习第四天</a><time datetime="2026-07-26T11:03:11.000Z" title="发表于 2026-07-26 19:03:11">2026-07-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/liu.github.io/2026/07/23/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/" title="C++primer-学习第三天"><img src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="this.onerror=null;this.src='/liu.github.io/img/404.jpg'" alt="C++primer-学习第三天"/></a><div class="content"><a class="title" href="/liu.github.io/2026/07/23/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/" title="C++primer-学习第三天">C++primer-学习第三天</a><time datetime="2026-07-23T11:05:51.000Z" title="发表于 2026-07-23 19:05:51">2026-07-23</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/liu.github.io/2026/07/21/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/" title="C++primer-学习第二天"><img src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="this.onerror=null;this.src='/liu.github.io/img/404.jpg'" alt="C++primer-学习第二天"/></a><div class="content"><a class="title" href="/liu.github.io/2026/07/21/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%8C%E5%A4%A9/" title="C++primer-学习第二天">C++primer-学习第二天</a><time datetime="2026-07-21T11:11:53.000Z" title="发表于 2026-07-21 19:11:53">2026-07-21</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mzghqgz</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/liu.github.io/js/utils.js?v=5.5.5"></script><script src="/liu.github.io/js/main.js?v=5.5.5"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
