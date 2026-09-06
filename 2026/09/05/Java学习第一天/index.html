@@ -1,0 +1,210 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0,viewport-fit=cover"><title>Java学习第一天 | 我的技术博客</title><meta name="author" content="mzghqgz"><meta name="copyright" content="mzghqgz"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta name="description" content="1.什么是就近原则，如果出现重名成员变量怎么办 如果局部变量和类里边的成员变量重名，优先使用距离其较近的那个变量，先在 局部作用域内查找，找不到则在类里边查找，如果还找不到，就在父类里边查找  补充：局部变量和成员变量重名时，this.成员变量才能访问成员变量，否则用局部 2.什么是方法重写，与重载的区别 方法重写一般发生在继承关系中，子类重写父类中方法名一样的函数，重载是指 不同的方法，他们方法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Java学习第一天">
+<meta property="og:url" content="http://mzghqgz.github.io/liu.github.io/2026/09/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%80%E5%A4%A9/index.html">
+<meta property="og:site_name" content="我的技术博客">
+<meta property="og:description" content="1.什么是就近原则，如果出现重名成员变量怎么办 如果局部变量和类里边的成员变量重名，优先使用距离其较近的那个变量，先在 局部作用域内查找，找不到则在类里边查找，如果还找不到，就在父类里边查找  补充：局部变量和成员变量重名时，this.成员变量才能访问成员变量，否则用局部 2.什么是方法重写，与重载的区别 方法重写一般发生在继承关系中，子类重写父类中方法名一样的函数，重载是指 不同的方法，他们方法">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg">
+<meta property="article:published_time" content="2026-09-05T05:25:38.000Z">
+<meta property="article:modified_time" content="2026-09-06T04:56:43.204Z">
+<meta property="article:author" content="mzghqgz">
+<meta property="article:tag" content="C++">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg"><script type="application/ld+json">{
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Java学习第一天",
+  "url": "http://mzghqgz.github.io/liu.github.io/2026/09/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%80%E5%A4%A9/",
+  "image": "https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg",
+  "datePublished": "2026-09-05T05:25:38.000Z",
+  "dateModified": "2026-09-06T04:56:43.204Z",
+  "author": [
+    {
+      "@type": "Person",
+      "name": "mzghqgz",
+      "url": "http://mzghqgz.github.io/liu.github.io"
+    }
+  ]
+}</script><link rel="shortcut icon" href="/liu.github.io/img/favicon.png"><link rel="canonical" href="http://mzghqgz.github.io/liu.github.io/2026/09/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%80%E5%A4%A9/index.html"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><link rel="stylesheet" href="/liu.github.io/css/index.css?v=5.5.5"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@7.2.0/css/all.min.css"><script>
+    (() => {
+      
+    const saveToLocal = {
+      set: (key, value, ttl) => {
+        if (!ttl) return
+        const expiry = Date.now() + ttl * 86400000
+        localStorage.setItem(key, JSON.stringify({ value, expiry }))
+      },
+      get: key => {
+        const itemStr = localStorage.getItem(key)
+        if (!itemStr) return undefined
+        const { value, expiry } = JSON.parse(itemStr)
+        if (Date.now() > expiry) {
+          localStorage.removeItem(key)
+          return undefined
+        }
+        return value
+      }
+    }
+
+    window.btf = {
+      saveToLocal,
+      getScript: (url, attr = {}) => new Promise((resolve, reject) => {
+        const script = document.createElement('script')
+        script.src = url
+        script.async = true
+        Object.entries(attr).forEach(([key, val]) => script.setAttribute(key, val))
+        script.onload = script.onreadystatechange = () => {
+          if (!script.readyState || /loaded|complete/.test(script.readyState)) resolve()
+        }
+        script.onerror = reject
+        document.head.appendChild(script)
+      }),
+      getCSS: (url, id) => new Promise((resolve, reject) => {
+        const link = document.createElement('link')
+        link.rel = 'stylesheet'
+        link.href = url
+        if (id) link.id = id
+        link.onload = link.onreadystatechange = () => {
+          if (!link.readyState || /loaded|complete/.test(link.readyState)) resolve()
+        }
+        link.onerror = reject
+        document.head.appendChild(link)
+      }),
+      addGlobalFn: (key, fn, name = false, parent = window) => {
+        if (!false && key.startsWith('pjax')) return
+        const globalFn = parent.globalFn || {}
+        globalFn[key] = globalFn[key] || {}
+        globalFn[key][name || Object.keys(globalFn[key]).length] = fn
+        parent.globalFn = globalFn
+      }
+    }
+  
+      
+      const activateDarkMode = () => {
+        document.documentElement.setAttribute('data-theme', 'dark')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+        }
+      }
+      const activateLightMode = () => {
+        document.documentElement.setAttribute('data-theme', 'light')
+        if (document.querySelector('meta[name="theme-color"]') !== null) {
+          document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+        }
+      }
+
+      btf.activateDarkMode = activateDarkMode
+      btf.activateLightMode = activateLightMode
+
+      const theme = saveToLocal.get('theme')
+    
+          theme === 'dark' ? activateDarkMode() : theme === 'light' ? activateLightMode() : null
+        
+      
+      const asideStatus = saveToLocal.get('aside-status')
+      if (asideStatus !== undefined) {
+        document.documentElement.classList.toggle('hide-aside', asideStatus === 'hide')
+      }
+    
+      
+    const detectApple = () => {
+      if (/iPad|iPhone|iPod|Macintosh/.test(navigator.userAgent)) {
+        document.documentElement.classList.add('apple')
+      }
+    }
+    detectApple()
+  
+    })()
+  </script><script>const GLOBAL_CONFIG = {
+  root: '/liu.github.io/',
+  algolia: undefined,
+  localSearch: undefined,
+  translate: undefined,
+  highlight: {"plugin":"highlight.js","highlightCopy":true,"highlightLang":true,"highlightHeightLimit":false,"highlightFullpage":false,"highlightMacStyle":false},
+  copy: {
+    success: '复制成功',
+    error: '复制失败',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  dateSuffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  lightbox: 'null',
+  Snackbar: undefined,
+  infinitegrid: {
+    js: 'https://cdn.jsdelivr.net/npm/@egjs/infinitegrid@4.13.0/dist/infinitegrid.min.js',
+    buttonText: '加载更多'
+  },
+  isPhotoFigcaption: false,
+  islazyloadPlugin: false,
+  isAnchor: false,
+  percent: {
+    toc: true,
+    rightside: false,
+  },
+  autoDarkmode: false
+}</script><script id="config-diff">var GLOBAL_CONFIG_SITE = {
+  title: 'Java学习第一天',
+  isHighlightShrink: false,
+  isToc: false,
+  pageType: 'post'
+}</script><meta name="generator" content="Hexo 8.1.2"></head><body><div class="post" id="body-wrap"><header class="post-bg" id="page-header" style="background-image: url(https://pic1.imgdb.cn/i/033slKgKqvO388zhHSJVfy.jpg);"><nav id="nav"><span id="blog-info"><a class="nav-site-title" href="/liu.github.io/"><span class="site-name">我的技术博客</span></a><a class="nav-page-title" href="/liu.github.io/"><span class="site-name">Java学习第一天</span><span class="site-name"><i class="fa-solid fa-circle-arrow-left"></i><span>  返回首页</span></span></a></span><div id="menus"></div></nav><div id="post-info"><h1 class="post-title">Java学习第一天</h1><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2026-09-05T05:25:38.000Z" title="发表于 2026-09-05 13:25:38">2026-09-05</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2026-09-06T04:56:43.204Z" title="更新于 2026-09-06 12:56:43">2026-09-06</time></span></div><div class="meta-secondline"><span class="post-meta-separator">|</span><span class="post-meta-pv-cv" id="" data-flag-title=""><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">浏览量:</span><span id="busuanzi_value_page_pv"><i class="fa-solid fa-spinner fa-spin"></i></span></span></div></div></div></header><main class="layout" id="content-inner"><div id="post"><article class="container post-content" id="article-container"><p>1.什么是就近原则，如果出现重名成员变量怎么办</p>
+<pre><code>如果局部变量和类里边的成员变量重名，优先使用距离其较近的那个变量，先在
+局部作用域内查找，找不到则在类里边查找，如果还找不到，就在父类里边查找
+</code></pre>
+<p>补充：局部变量和成员变量重名时，this.成员变量才能访问成员变量，否则用局部</p>
+<p>2.什么是方法重写，与重载的区别</p>
+<pre><code>方法重写一般发生在继承关系中，子类重写父类中方法名一样的函数，重载是指
+不同的方法，他们方法名相同，但参数不同
+</code></pre>
+<p>补充：重写：方法名，参数列表，返回值必须一致，访问权限不能比父类更严格，不能抛出<br>更宽泛的异常</p>
+<p>3.方法重写的本质(用虚方法表解释)，什么样的方法才能被重写</p>
+<pre><code>方法重写的本质是调用虚方法表中的子类的方法覆盖了父类的方法，只有非static
+非final，非private的方法才能被重写
+</code></pre>
+<p>4.继承中构造方法的访问特点(子类如何调用父类构造方法)</p>
+<pre><code>子类可以通过super()来调用父类的无参构造方法，有参构造方法只需调用有参的super
+方法。通常初始化子类时都会默认初始化父类
+</code></pre>
+<p>5.多态的应用场景举例</p>
+<pre><code>例如：有一个父类Fu,一个子类:Zi1,另一个子类:Zi2,重写方法为eat方法，可以通过调用’
+Fu f = Zi1 z1; Fu u = Zi2 z2,f.eat()调用的是Zi1的eat方法,u.eat()调用的是Zi2
+的eat()方法
+</code></pre>
+<p>6.多态的优势</p>
+<pre><code>多态即一个对象的不同形态，通过给父类对象赋子类对象的值，从而通过父类调用子类的重写
+方法，这样可以无需调用子类即可访问子类的重写方法
+</code></pre>
+<p>7.多态的弊端</p>
+<pre><code>一旦给父类对象赋予了子类对象的值，父类对象就只能调用共有的方法和成员变量，而无法调用
+子类特有的变量和成员方法
+</code></pre>
+<p>8.如何使用子类特有类型</p>
+<pre><code>需要将父类强转为子类，才可以调用子类特有的类型
+
+补充：向下转型，必须要instanceof判断类型，否则会抛出ClassCastException类型转换异常
+如：if(f instanceof Zi){Zi1 z=(Zi1)f;z.子类特有方法();} 
+</code></pre>
+<p>9.final的作用</p>
+<pre><code>final相当于C++中的const，修饰类时，表示该类无法被继承，修饰方法时，表示该方法无法被重写
+修饰基本数据类型时表示一个常量，修饰引用数据类型时，表示该数据的地址值不变，但里边的对象
+可以改变
+</code></pre>
+<p>10.字符串String为什么不可变</p>
+<pre><code>因为在源码上看，String类型的构造方法是final和private的
+
+错误：1.String类本身被final修饰，不能被继承
+     2.String内部保存字符的数组是private，外部不能直接访问，是final，数组引用地址不能变
+</code></pre>
+</article><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta"><i class="fas fa-circle-user fa-fw"></i>文章作者: </span><span class="post-copyright-info"><a href="http://mzghqgz.github.io/liu.github.io">mzghqgz</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta"><i class="fas fa-square-arrow-up-right fa-fw"></i>文章链接: </span><span class="post-copyright-info"><a href="http://mzghqgz.github.io/liu.github.io/2026/09/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%80%E5%A4%A9/">http://mzghqgz.github.io/liu.github.io/2026/09/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%80%E5%A4%A9/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta"><i class="fas fa-circle-exclamation fa-fw"></i>版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来源 <a href="http://mzghqgz.github.io/liu.github.io" target="_blank">我的技术博客</a>！</span></div></div><div class="tag_share"><div class="post-share"><div class="social-share" data-image="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" data-sites="facebook,x,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/css/share.min.css" media="print" onload="this.media='all'"><script src="https://cdn.jsdelivr.net/npm/butterfly-extsrc@1.1.6/sharejs/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><a class="pagination-related full-width" href="/liu.github.io/2026/07/29/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%85%AD%E5%A4%A9/" title="C++primer-学习第六天"><img class="cover" src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="onerror=null;src='/liu.github.io/img/404.jpg'" alt="cover of next post"><div class="info text-right"><div class="info-1"><div class="info-item-1">下一篇</div><div class="info-item-2">C++primer-学习第六天</div></div><div class="info-2"><div class="info-item-1">第10章 泛型算法    10.1 lambda表达式    1.基本语法：[capture list](parameter list)mutable-&gt;return type{function body}    捕获列表[]：访问所在函数的局部变量    捕获方式：1.值捕获[var]，拷贝变量到lambda内部，默认const，不加mutable不能修改。             2.引用捕获[&amp;var]，绑定外部变量引用，lambda内修改会直接改变外部原值             3.全部捕获简写：[&#x3D;]:全部值捕获。[&amp;]:全部引用捕获             4.混合捕获示例:[&#x3D;,&amp;x]: 默认值捕获，唯独x引用捕获。[&amp;,y]：默认引用捕获，唯独y值捕获    捕获时机：             lambda捕获发生在lambda被定义时，不是调用时。             int x &#x3D; 10;             auto f &#x3D; x{cout&lt;&lt;x;}      ...</div></div></div></a></nav></div><div class="aside-content" id="aside-content"><div class="card-widget card-info text-center"><div class="avatar-img"><img src="/liu.github.io/img/butterfly-icon.png" onerror="this.onerror=null;this.src='/liu.github.io/img/friend_404.gif'" alt="avatar"/></div><div class="author-info-name">mzghqgz</div><div class="author-info-description">记录C++学习心得</div><div class="site-data"><a href="/liu.github.io/archives/"><div class="headline">文章</div><div class="length-num">8</div></a><a href="/liu.github.io/tags/"><div class="headline">标签</div><div class="length-num">0</div></a><a href="/liu.github.io/categories/"><div class="headline">分类</div><div class="length-num">0</div></a></div><a id="card-info-btn" target="_blank" rel="noopener" href="https://github.com/xxxxxx"><i class="fab fa-github"></i><span>Follow Me</span></a></div><div class="card-widget card-announcement"><div class="item-headline"><i class="fas fa-bullhorn fa-shake"></i><span>公告</span></div><div class="announcement_content">This is my Blog</div></div><div class="sticky_layout"><div class="card-widget card-recent-post"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/liu.github.io/2026/09/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%80%E5%A4%A9/" title="Java学习第一天"><img src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="this.onerror=null;this.src='/liu.github.io/img/404.jpg'" alt="Java学习第一天"/></a><div class="content"><a class="title" href="/liu.github.io/2026/09/05/Java%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%80%E5%A4%A9/" title="Java学习第一天">Java学习第一天</a><time datetime="2026-09-05T05:25:38.000Z" title="发表于 2026-09-05 13:25:38">2026-09-05</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/liu.github.io/2026/07/29/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%85%AD%E5%A4%A9/" title="C++primer-学习第六天"><img src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="this.onerror=null;this.src='/liu.github.io/img/404.jpg'" alt="C++primer-学习第六天"/></a><div class="content"><a class="title" href="/liu.github.io/2026/07/29/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%85%AD%E5%A4%A9/" title="C++primer-学习第六天">C++primer-学习第六天</a><time datetime="2026-07-29T11:02:12.000Z" title="发表于 2026-07-29 19:02:12">2026-07-29</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/liu.github.io/2026/07/28/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%94%E5%A4%A9/" title="C++primer-学习第五天"><img src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="this.onerror=null;this.src='/liu.github.io/img/404.jpg'" alt="C++primer-学习第五天"/></a><div class="content"><a class="title" href="/liu.github.io/2026/07/28/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%BA%94%E5%A4%A9/" title="C++primer-学习第五天">C++primer-学习第五天</a><time datetime="2026-07-28T11:04:02.000Z" title="发表于 2026-07-28 19:04:02">2026-07-28</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/liu.github.io/2026/07/26/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%9B%9B%E5%A4%A9/" title="C++primer-学习第四天"><img src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="this.onerror=null;this.src='/liu.github.io/img/404.jpg'" alt="C++primer-学习第四天"/></a><div class="content"><a class="title" href="/liu.github.io/2026/07/26/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E5%9B%9B%E5%A4%A9/" title="C++primer-学习第四天">C++primer-学习第四天</a><time datetime="2026-07-26T11:03:11.000Z" title="发表于 2026-07-26 19:03:11">2026-07-26</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/liu.github.io/2026/07/23/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/" title="C++primer-学习第三天"><img src="https://pic1.imgdb.cn/i/033slKgBOpb2he5GxFEZq7.jpg" onerror="this.onerror=null;this.src='/liu.github.io/img/404.jpg'" alt="C++primer-学习第三天"/></a><div class="content"><a class="title" href="/liu.github.io/2026/07/23/C++primer-%E5%AD%A6%E4%B9%A0%E7%AC%AC%E4%B8%89%E5%A4%A9/" title="C++primer-学习第三天">C++primer-学习第三天</a><time datetime="2026-07-23T11:05:51.000Z" title="发表于 2026-07-23 19:05:51">2026-07-23</time></div></div></div></div></div></div></main><footer id="footer"><div class="footer-other"><div class="footer-copyright"><span class="copyright">&copy;&nbsp;2025 - 2026 By mzghqgz</span><span class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo 8.1.2</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly 5.5.5</a></span></div></div></footer></div><div id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="日间和夜间模式切换"><i class="fas fa-adjust"></i></button><button id="hide-aside-btn" type="button" title="单栏和双栏切换"><i class="fas fa-arrows-alt-h"></i></button></div><div id="rightside-config-show"><button id="rightside-config" type="button" title="设置"><i class="fas fa-cog fa-spin"></i></button><button id="go-up" type="button" title="回到顶部"><span class="scroll-percent"></span><i class="fas fa-arrow-up"></i></button></div></div><div><script src="/liu.github.io/js/utils.js?v=5.5.5"></script><script src="/liu.github.io/js/main.js?v=5.5.5"></script><div class="js-pjax"></div><script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></body></html>
